@@ -1,0 +1,130 @@
+// ============================================================
+// Global stylesheet
+// Order matters: variables → Bootstrap → custom utilities
+// ============================================================
+
+// 1. Variable overrides (must come before Bootstrap)
+@use 'variables' as *;
+@use 'sass:color';
+
+// 2. Bootstrap full import
+//    Importing via sass gives us variable override support.
+//    Bootstrap 5 uses @import internally; silenced in nuxt.config.ts.
+@import 'bootstrap/scss/bootstrap';
+
+// 3. Project-level global styles
+// ============================================================
+
+// --- Base ---------------------------------------------------
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $body-bg;
+  color: $body-color;
+  min-height: 100vh;
+}
+
+// --- Prose / content typography -----------------------------
+.prose {
+  h1, h2, h3, h4, h5, h6 {
+    color: $headings-color;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+  }
+
+  code {
+    font-family: $font-family-monospace;
+    font-size: 0.875em;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.15em 0.4em;
+    border-radius: $border-radius-sm;
+  }
+
+  pre {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $border-radius;
+    padding: 1.25rem;
+    overflow-x: auto;
+
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+
+  blockquote {
+    border-left: 4px solid $primary;
+    padding-left: 1rem;
+    color: rgba($body-color, 0.75);
+    font-style: italic;
+  }
+
+  a {
+    color: $link-color;
+    &:hover { color: $link-hover-color; }
+  }
+}
+
+// --- Navbar -------------------------------------------------
+.site-navbar {
+  background: rgba($light, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+// --- Feed badges --------------------------------------------
+.feed-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2em 0.55em;
+  border-radius: $border-radius-sm;
+
+  &--bluesky {
+    background: #0085ff;
+    color: #fff;
+  }
+
+  &--github {
+    background: #24292e;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  &--blog {
+    background: $primary;
+    color: #fff;
+  }
+}
+
+// --- Cards --------------------------------------------------
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $border-radius-lg;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+// --- WebGL fallback -----------------------------------------
+// Applied when the SplatBackground component detects no WebGL2 support.
+.splat-fallback {
+  background: linear-gradient(
+    135deg,
+    color.adjust($dark, $lightness: -5%) 0%,
+    $dark 40%,
+    color.adjust($dark, $lightness: 4%) 100%
+  );
+}

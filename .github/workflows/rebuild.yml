@@ -1,0 +1,31 @@
+name: Scheduled Rebuild (Activity Feed)
+
+# Rebuild the site hourly so the Bluesky + GitHub activity feed stays fresh.
+# The actual deploy happens in deploy.yml via workflow_dispatch.
+on:
+  schedule:
+    # Every hour at :05 past the hour (UTC)
+    - cron: '5 * * * *'
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  actions: write   # needed to trigger the deploy workflow
+  contents: read
+
+jobs:
+  trigger-deploy:
+    name: Trigger deploy workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy via workflow_dispatch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main',
+            })

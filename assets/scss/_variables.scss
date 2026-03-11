@@ -1,0 +1,68 @@
+// ============================================================
+// Bootstrap 5 variable overrides
+// All variables must be declared BEFORE the Bootstrap import.
+// See: https://getbootstrap.com/docs/5.3/customize/sass/
+// ============================================================
+
+@use 'sass:color';
+
+// Using this Coolors theme: https://coolors.co/eec643-141414-eef0f2-0d21a1-011638
+
+// --- Colors -------------------------------------------------
+// TODO: Replace with your actual brand palette.
+$primary:   #0D21A1;   
+$secondary: #011638; 
+$success:   #43a047;
+$info:      #00acc1;
+$warning:   #fb8c00;
+$danger:    #e53935;
+$light:     #EEF0F2;
+$dark:      #141414;
+
+// Custom semantic tokens
+$body-bg:   $light;
+$body-color: $dark;
+
+$link-color:          $secondary;
+$link-hover-color:    $primary;
+// $link-decoration:     none;
+$link-hover-decoration: underline;
+
+// --- Typography ---------------------------------------------
+$font-family-sans-serif: 'Space Mono', monospace;
+$font-family-monospace:  'Space Mono', monospace;
+$font-size-base:         1rem;
+$line-height-base:       1.65;
+
+$headings-font-weight:   600;
+$headings-color:         $dark;
+
+// --- Spacing ------------------------------------------------
+$spacer: 1rem;
+
+// --- Borders ------------------------------------------------
+$border-radius:    0.375rem;
+$border-radius-lg: 0.5rem;
+$border-radius-sm: 0.25rem;
+
+// --- Cards --------------------------------------------------
+$card-bg:          rgba(255, 255, 255, 0.05);
+$card-border-color: rgba(255, 255, 255, 0.1);
+$card-color:       $body-color;
+
+// --- Navbar -------------------------------------------------
+$navbar-dark-color:          $dark;
+$navbar-dark-hover-color:    color.adjust($secondary, $lightness: 15%);
+$navbar-dark-active-color:   $secondary;
+$navbar-dark-brand-color:    color.adjust($secondary, $lightness: 15%);
+$navbar-padding-y:           0.75rem;
+
+// --- Breakpoints (Bootstrap defaults, shown for reference) --
+// $grid-breakpoints: (
+//   xs: 0,
+//   sm: 576px,
+//   md: 768px,
+//   lg: 992px,
+//   xl: 1200px,
+//   xxl: 1400px,
+// );

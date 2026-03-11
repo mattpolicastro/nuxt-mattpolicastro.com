@@ -1,0 +1,32 @@
+{
+  "name": "mattpolicastro-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "preview": "npx serve .output/public",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@bootstrap-vue-next/nuxt": "^0.25.0",
+    "@nuxt/content": "^3.4.0",
+    "better-sqlite3": "^12.6.2",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue-next": "^0.25.0",
+    "nuxt": "^3.16.0",
+    "three": "^0.173.0",
+    "vue": "^3.5.0"
+  },
+  "overrides": {
+    "serialize-javascript": ">=7.0.3"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/node": "^22.0.0",
+    "@types/three": "^0.173.0",
+    "sass": "^1.85.0",
+    "typescript": "^5.7.0",
+    "vue-tsc": "^2.2.0"
+  }
+}

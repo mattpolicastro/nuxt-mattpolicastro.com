@@ -1,0 +1,73 @@
+import type { FeedItem } from '~/components/feed/types'
+import { BlueskyAdapter } from '~/components/feed/adapters/BlueskyAdapter'
+import { GitHubAdapter } from '~/components/feed/adapters/GitHubAdapter'
+
+// ============================================================
+// useFeed — unified activity feed composable
+//
+// Runs all registered adapters in parallel, folds in blog posts
+// from Nuxt Content, and returns a single chronologically sorted
+// array of FeedItems.
+//
+// To add a new external platform:
+//  1. Create your adapter in components/feed/adapters/
+//  2. Import it here and add it to the `adapters` array.
+// ============================================================
+
+const adapters = [
+  new BlueskyAdapter(),
+  new GitHubAdapter(),
+  // TODO: Add more adapters here as needed.
+  //   e.g. new MastodonAdapter(), new SubstackAdapter()
+]
+
+async function fetchAdapterItems(): Promise<FeedItem[]> {
+  const results = await Promise.allSettled(adapters.map((a) => a.fetch()))
+
+  const items: FeedItem[] = []
+  for (const [i, result] of results.entries()) {
+    if (result.status === 'fulfilled') {
+      items.push(...result.value)
+    } else {
+      console.warn(`[useFeed] Adapter "${adapters[i]!.name}" failed:`, result.reason)
+    }
+  }
+  return items
+}
+
+/**
+ * Vue composable — fetches all external adapter items and blog posts,
+ * merges them into a single chronological stream, and bakes the result
+ * into the static payload via useAsyncData.
+ *
+ * Usage:
+ *   const { data: feedItems } = await useFeed()
+ */
+export function useFeed() {
+  return useAsyncData<FeedItem[]>('unified-feed', async () => {
+    const [adapterItems, posts] = await Promise.all([
+      fetchAdapterItems(),
+      queryCollection('posts').order('date', 'DESC').all(),
+    ])
+
+    const blogItems: FeedItem[] = posts.map((post) => ({
+      platform: 'blog' as const,
+      type: 'blog_post',
+      // Blog post dates are date-only strings; see FeedItem.date note in types.ts
+      date: post.date,
+      title: post.title,
+      content: post.description ?? post.title,
+      // Build date-based URL: /YYYY/MM/DD/slug
+      // Split on '-' rather than parsing with Date to avoid UTC midnight offset issues.
+      url: (() => {
+        const [year = '', month = '', day = ''] = post.date.slice(0, 10).split('-')
+        const slug = post.path.split('/').at(-1) ?? ''
+        return `/${year}/${month.padStart(2, '0')}/${day.padStart(2, '0')}/${slug}`
+      })(),
+    }))
+
+    return [...adapterItems, ...blogItems].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
+  })
+}

@@ -1,0 +1,10 @@
+{
+  // Nuxt generates .nuxt/tsconfig.json; extend it here for project-level overrides.
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "bundler"
+  }
+}
