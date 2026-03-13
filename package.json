@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.25.0",
+    "@growthbook/growthbook": "^1.6.5",
     "@nuxt/content": "^3.4.0",
     "@simpleanalytics/nuxt": "^2.0.0",
     "better-sqlite3": "^12.6.2",
