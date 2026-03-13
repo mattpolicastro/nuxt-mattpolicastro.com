@@ -12,17 +12,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       autoAttributesPlugin(),
       growthbookTrackingPlugin(),
     ],
-    trackingCallback: (experiment, result) => {
-      console.log(`[GrowthBook] Experiment ${experiment.key} result: ${result.key}`)
-      console.log(typeof window.sa_event)
-      // Access window.sa_event at call time, not at init time — by the time
-      // trackingCallback fires (lazily, during component rendering), the SA
-      // script has loaded and window.sa_event is available.
-      window.sa_event?.('Experiment Viewed', {
-        experimentKey: experiment.key,
-        resultKey: result.key,
-      })
-    },
   })
 
   // Non-blocking init — the reactive instance updates components once features load.
