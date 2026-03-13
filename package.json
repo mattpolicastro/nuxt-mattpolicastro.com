@@ -11,6 +11,7 @@
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.25.0",
     "@nuxt/content": "^3.4.0",
+    "@simpleanalytics/nuxt": "^2.0.0",
     "better-sqlite3": "^12.6.2",
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.25.0",
@@ -26,7 +27,6 @@
     "@types/node": "^22.0.0",
     "@types/three": "^0.173.0",
     "sass": "^1.85.0",
-    "simple-analytics-vue": "^3.1.0",
     "typescript": "^5.7.0",
     "vue-tsc": "^2.2.0"
   }

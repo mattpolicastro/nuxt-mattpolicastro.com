@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@bootstrap-vue-next/nuxt',
+    ['@simpleanalytics/nuxt', { hostname: 'mattpolicastro.com' }],
   ],
 
   // Bootstrap + custom SCSS
