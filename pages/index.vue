@@ -23,12 +23,4 @@ const { data: feedItems } = await useFeed()
 </template>
 
 <style scoped>
-.hero-section {
-  /* min-height: 75vh; */
-}
-
-.hero-splat {
-  position: absolute;
-  inset: 0;
-}
 </style>
