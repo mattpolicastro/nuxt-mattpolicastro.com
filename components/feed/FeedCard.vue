@@ -62,13 +62,20 @@ const isInternal = computed(() => props.item.url.startsWith('/'))
           <span :class="badgeClass">
             {{ platformLabel[item.platform] ?? item.platform }}
           </span>
-          <time
-            :datetime="item.date"
-            class="text-muted small"
-            :title="formatDate(item.date)"
-          >
-            {{ relativeDate(item.date) }}
-          </time>
+          <ClientOnly>
+            <time
+              :datetime="item.date"
+              class="text-muted small"
+              :title="formatDate(item.date)"
+            >
+              {{ relativeDate(item.date) }}
+            </time>
+            <template #fallback>
+              <time :datetime="item.date" class="text-muted small">
+                {{ formatDate(item.date) }}
+              </time>
+            </template>
+          </ClientOnly>
           <span
             v-if="item.type !== 'skeet' && item.type !== 'quote_post'"
             class="text-muted small fst-italic"
