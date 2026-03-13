@@ -35,16 +35,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check secrets
-        run: |
-          if [ -z "$NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY" ]; then
-            echo "❌ NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY is not set"
-          else
-            echo "✅ NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY is set (${#NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY} chars)"
-          fi
-        env:
-          NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY: ${{ secrets.NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY }}
-
       - name: Generate static site
         run: npm run build
         env:
