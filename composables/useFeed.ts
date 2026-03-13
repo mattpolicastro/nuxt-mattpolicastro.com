@@ -69,5 +69,9 @@ export function useFeed() {
     return [...adapterItems, ...blogItems].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
+  }, {
+    // Use the pre-rendered payload on the client — never re-fetch live API data
+    // during hydration, which would produce a different result from the static HTML.
+    getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
   })
 }
