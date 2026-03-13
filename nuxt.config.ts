@@ -25,6 +25,12 @@ export default defineNuxtConfig({
     ['@simpleanalytics/nuxt', { hostname: 'mattpolicastro.com' }],
   ],
 
+  runtimeConfig: {
+    public: {
+      growthbookClientKey: '', // override with NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY
+    },
+  },
+
   // Bootstrap + custom SCSS
   css: ['~/assets/scss/main.scss'],
 
