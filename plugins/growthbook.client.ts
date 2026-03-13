@@ -12,6 +12,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       autoAttributesPlugin(),
       growthbookTrackingPlugin(),
     ],
+    trackingCallback: (experiment, result) => {
+      console.log(`[GrowthBook] Experiment "${experiment.key}" viewed. Result:`, result)
+      window.sa_event?.('Experiment Viewed', {
+        experimentKey: experiment.key,
+        variationId: result.key,
+      })
+    },
   })
 
   // Non-blocking init — the reactive instance updates components once features load.

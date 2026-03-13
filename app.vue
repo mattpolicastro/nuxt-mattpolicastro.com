@@ -14,6 +14,10 @@ function submitSearch() {
 // Close the mobile nav on route change.
 const route = useRoute()
 watch(() => route.path, () => { navOpen.value = false })
+
+// First Growthbook test
+const gb = useGrowthBook()
+const featureFlag = ref(gb?.isOn('a_a-test'))
 </script>
 
 <template>
