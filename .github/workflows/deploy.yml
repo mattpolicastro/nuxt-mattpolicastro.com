@@ -58,3 +58,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        env:
+          NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY: ${{ secrets.NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY }}
