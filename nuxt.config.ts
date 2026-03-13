@@ -22,8 +22,13 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@bootstrap-vue-next/nuxt',
-    ['@simpleanalytics/nuxt', { hostname: 'mattpolicastro.com' }],
+    '@simpleanalytics/nuxt',
   ],
+
+  simpleAnalytics: {
+    hostname: 'mattpolicastro.com',
+    collectDnt: true,
+  },
 
   runtimeConfig: {
     public: {
