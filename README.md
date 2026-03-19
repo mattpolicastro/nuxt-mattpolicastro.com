@@ -41,11 +41,12 @@ Creates a new draft post in `content/drafts/` with frontmatter scaffolding. The 
 npm run post -- publish slug
 ```
 
-Moves a draft from `content/drafts/` to `content/posts/`, making it live on the site. 
+Moves a draft from `content/drafts/` to `content/posts/`, making it live on the site. Automatically commits the published post to git.
 
 When published:
 - The `date` field is updated to the publication timestamp
 - The `created` field preserves the original draft creation date
+- The post is automatically staged and committed with message `post: [title]`
 
 Example:
 ```bash
