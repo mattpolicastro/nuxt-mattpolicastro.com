@@ -26,6 +26,11 @@ Thumbs.db
 *.swo
 .vscode/settings.json
 .idea/
+*.code-workspace
+
+# Aider artifacts
+.aider.*
+.aider/
 
 # Splat binaries (large files — host on CDN or use Git LFS)
 # public/splats/*.ksplat
