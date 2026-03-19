@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -110,6 +111,20 @@ function publishDraft(slug) {
   if (originalDate) {
     console.log(`   Created: ${originalDate}`);
     console.log(`   Published: ${publishDate}`);
+  }
+
+  // Extract title from content for commit message
+  const titleMatch = content.match(/^title: (.+)$/m);
+  const title = titleMatch ? titleMatch[1] : slug;
+
+  // Commit the published post
+  try {
+    execSync(`cd "${projectRoot}" && git add content/posts/${slug}.md && git commit -m "post: ${title}"`, {
+      stdio: 'pipe',
+    });
+    console.log(`   ✓ Committed to git`);
+  } catch (error) {
+    console.warn(`   ⚠ Git commit failed (continue without auto-commit if desired)`);
   }
 }
 
