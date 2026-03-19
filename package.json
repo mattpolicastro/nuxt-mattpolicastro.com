@@ -6,7 +6,8 @@
     "dev": "nuxt dev",
     "build": "nuxt generate",
     "preview": "npx serve .output/public",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "post": "node scripts/manage-posts.js"
   },
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.25.0",
