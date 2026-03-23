@@ -2,7 +2,7 @@
 title: Claudin' Around Pt. 3
 date: "2026-03-19T07:08:41.490Z"
 created: "2026-03-19T05:31:35.661Z"
-description: 
+description: FA'ing, F'ing O.
 tags: []
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: The Latest & Greatest
 date: "2018-04-05T00:20:50"
-description: >-
+description: Switching to Ghost, finishing grad school, and settling into Chicago.
 tags: []
 ---
 

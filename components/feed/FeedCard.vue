@@ -90,7 +90,14 @@ const isInternal = computed(() => props.item.url.startsWith('/'))
         </p>
 
         <!-- Content body -->
-        <p class="mb-2 small text-secondary" style="white-space: pre-wrap;">
+        <p
+          v-if="item.type !== 'blog_post' || item.content !== item.title"
+          :class="[
+            'mb-2 text-secondary',
+            item.type === 'blog_post' ? '' : 'small',
+          ]"
+          style="white-space: pre-wrap;"
+        >
           {{ item.content }}
         </p>
 

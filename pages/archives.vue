@@ -55,12 +55,17 @@ const byYear = computed(() => {
             <li
               v-for="post in yearPosts"
               :key="post.path"
-              class="d-flex align-items-baseline gap-3 py-1"
+              class="py-2"
             >
-              <span class="text-muted small text-nowrap">{{ formatDate(post.date) }}</span>
-              <NuxtLink :to="postUrl(post)" class="text-decoration-none post-link">
-                {{ post.title }}
-              </NuxtLink>
+              <div class="d-flex align-items-baseline gap-3">
+                <span class="text-muted small text-nowrap">{{ formatDate(post.date) }}</span>
+                <NuxtLink :to="postUrl(post)" class="text-decoration-none post-link">
+                  {{ post.title }}
+                </NuxtLink>
+              </div>
+              <p v-if="post.description" class="text-muted small mb-0 ms-5 ps-3">
+                {{ post.description }}
+              </p>
             </li>
           </ul>
         </section>
