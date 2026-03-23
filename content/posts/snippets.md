@@ -5,4 +5,4 @@ description: Microblogging rears its handsome head.
 tags: []
 ---
 
-<p>Sounds like <a href="http://www.manton.org/2016/07/4096.html">Manton Reece</a> is getting close to showing off his new microblogging service. I'm suddenly glad I've been avoiding Twitter integration while rehashing this site.</p>
+Sounds like [Manton Reece](http://www.manton.org/2016/07/4096.html) is getting close to showing off his new microblogging service. I'm suddenly glad I've been avoiding Twitter integration while rehashing this site.

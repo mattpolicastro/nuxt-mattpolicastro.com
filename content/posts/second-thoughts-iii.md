@@ -5,4 +5,4 @@ description: An attempt at microblogging.
 tags: []
 ---
 
-<p>Finally pushed up the new version of the site. Trying to nail down whatever's going on with RSS, but otherwise pleased to get this out into the world.</p>
+Finally pushed up the new version of the site. Trying to nail down whatever's going on with RSS, but otherwise pleased to get this out into the world.

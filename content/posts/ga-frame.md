@@ -5,4 +5,4 @@ description: Screwing around in virtual worlds.
 tags: []
 ---
 
-<p>As is the custom of my people, I puked a <a href="https://github.com/mattpolicastro/gaframe">rinky-dink virtual reality demo onto Github</a> at an ungodly hour. Enjoy?</p>
+As is the custom of my people, I puked a [rinky-dink virtual reality demo onto Github](https://github.com/mattpolicastro/gaframe) at an ungodly hour. Enjoy?

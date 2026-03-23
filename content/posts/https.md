@@ -5,5 +5,6 @@ description: I finally got on the HTTPS bandwagon, thanks to Let's Encrypt.
 tags: []
 ---
 
-<p>Many thanks to the fine folks at <a href="https://letsencrypt.org">Let's Encrypt.</a></p>
-<p>Viva la crypto-revolución.</p>
+Many thanks to the fine folks at [Let's Encrypt.](https://letsencrypt.org)
+
+Viva la crypto-revolucion.
