@@ -1,7 +1,7 @@
 ---
 title: Resurfacing
 date: "2022-05-05T23:47:41"
-description: Rebuilding the site, reviewing the archives, and other life updates.
+description: Rebuilding, reviewing, and other life updates.
 tags: []
 ---
 
