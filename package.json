@@ -7,7 +7,8 @@
     "build": "nuxt generate",
     "preview": "npx serve .output/public",
     "postinstall": "nuxt prepare",
-    "post": "node scripts/manage-posts.js"
+    "post": "node scripts/manage-posts.js",
+    "//post": "Post management: new \"Title\", publish <slug>, list"
   },
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.25.0",
