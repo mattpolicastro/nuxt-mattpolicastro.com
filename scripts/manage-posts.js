@@ -113,6 +113,19 @@ function publishDraft(slug) {
     console.log(`   Published: ${publishDate}`);
   }
 
+  // Check for bare URLs in markdown links (missing protocol)
+  const bareUrlPattern = /\[([^\]]+)\]\((?!https?:\/\/|\/|#|mailto:)([^)]+)\)/g;
+  const bareUrls = [...content.matchAll(bareUrlPattern)];
+  if (bareUrls.length > 0) {
+    console.error(`\n❌ Found links with missing protocol:`);
+    bareUrls.forEach(m => console.error(`   [${m[1]}](${m[2]}) — did you mean https://${m[2]}?`));
+    // Restore the draft
+    fs.writeFileSync(draftPath, fs.readFileSync(postPath, 'utf-8'));
+    fs.unlinkSync(postPath);
+    console.error(`\n   Draft restored. Fix the links and try again.`);
+    process.exit(1);
+  }
+
   // Extract title from content for commit message
   const titleMatch = content.match(/^title: (.+)$/m);
   const title = titleMatch ? titleMatch[1] : slug;
