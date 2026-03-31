@@ -1,4 +1,11 @@
 import { queryCollection } from '@nuxt/content/server'
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import { toHtml } from 'hast-util-to-html'
 
 // TODO: Set this to your actual production URL (no trailing slash).
 const SITE_URL = 'https://mattpolicastro.com'
@@ -28,17 +35,48 @@ function rfc2822(dateStr: string): string {
   return new Date(normalized).toUTCString()
 }
 
+/** Strip YAML frontmatter from markdown source. */
+function stripFrontmatter(md: string): string {
+  const match = md.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/)
+  return match ? md.slice(match[0].length) : md
+}
+
+/** Convert markdown to HTML. */
+async function markdownToHtml(md: string): Promise<string> {
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+
+  const tree = processor.parse(md)
+  const hast = await processor.run(tree)
+  return toHtml(hast)
+}
+
 export default defineEventHandler(async (event) => {
   const posts = await queryCollection(event, 'posts')
     .order('date', 'DESC')
     .all()
 
-  const items = posts
-    .map((post) => {
+  const contentDir = resolve('content/posts')
+
+  const items = (await Promise.all(
+    posts.map(async (post) => {
       const slug = post.path.split('/').at(-1) ?? ''
       const url = postUrl(post.date, slug)
       const title = xmlEscape(post.title)
       const description = xmlEscape(post.description ?? post.title)
+
+      let contentEncoded = ''
+      try {
+        const raw = await readFile(resolve(contentDir, `${slug}.md`), 'utf-8')
+        const body = stripFrontmatter(raw)
+        const html = await markdownToHtml(body)
+        contentEncoded = `\n      <content:encoded><![CDATA[${html}]]></content:encoded>`
+      }
+      catch {
+        // Fall back to description-only if the file can't be read
+      }
 
       return `
     <item>
@@ -46,13 +84,13 @@ export default defineEventHandler(async (event) => {
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${rfc2822(post.date)}</pubDate>
-      <description>${description}</description>
+      <description>${description}</description>${contentEncoded}
     </item>`
     })
-    .join('\n')
+  )).join('\n')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${xmlEscape(SITE_TITLE)}</title>
     <link>${SITE_URL}</link>
