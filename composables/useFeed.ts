@@ -50,6 +50,13 @@ export function useFeed() {
       queryCollection('posts').where('date', '<=', new Date().toISOString()).order('date', 'DESC').all(),
     ])
 
+    // Cap Bluesky to the 30 most recent for the homepage feed
+    const recentBsky = adapterItems
+      .filter(i => i.platform === 'bluesky')
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 30)
+    const nonBsky = adapterItems.filter(i => i.platform !== 'bluesky')
+
     const blogItems: FeedItem[] = posts.map((post) => ({
       platform: 'blog' as const,
       type: 'blog_post',
@@ -66,7 +73,7 @@ export function useFeed() {
       })(),
     }))
 
-    return [...adapterItems, ...blogItems].sort(
+    return [...recentBsky, ...nonBsky, ...blogItems].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
   }, {
