@@ -1,8 +1,9 @@
 <script setup lang="ts">
 useHead({ title: 'Archives — Matt Policastro' })
 
+const now = new Date().toISOString()
 const { data: posts } = await useAsyncData('archive-posts', () =>
-  queryCollection('posts').order('date', 'DESC').all(),
+  queryCollection('posts').where('date', '<=', now).order('date', 'DESC').all(),
 )
 
 function postUrl(post: { date: string; path: string }): string {

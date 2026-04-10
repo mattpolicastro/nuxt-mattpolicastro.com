@@ -16,8 +16,9 @@ const { data: sections } = await useAsyncData('search-sections', () =>
 )
 
 // All post metadata — needed to reconstruct date-based URLs.
+const now = new Date().toISOString()
 const { data: posts } = await useAsyncData('search-posts', () =>
-  queryCollection('posts').all(),
+  queryCollection('posts').where('date', '<=', now).all(),
 )
 
 const results = computed(() => {
@@ -80,7 +81,7 @@ function postTitle(postPath: string): string {
                 :to="postUrl(result.postPath)!"
                 class="text-decoration-none"
               >
-                <div class="card bg-dark border-secondary">
+                <div class="card border-secondary">
                   <div class="card-body">
                     <h5 class="card-title mb-1">
                       {{ postTitle(result.postPath) }}

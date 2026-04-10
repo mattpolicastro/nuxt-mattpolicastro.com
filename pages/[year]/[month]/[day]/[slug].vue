@@ -4,6 +4,7 @@ const slug = computed(() => route.params.slug as string)
 
 const { data: post } = await useAsyncData(`post-${slug.value}`, () =>
   queryCollection('posts')
+    .where('date', '<=', new Date().toISOString())
     .path(`/posts/${slug.value}`)
     .first()
 )

@@ -47,7 +47,7 @@ export function useFeed() {
   return useAsyncData<FeedItem[]>('unified-feed', async () => {
     const [adapterItems, posts] = await Promise.all([
       fetchAdapterItems(),
-      queryCollection('posts').order('date', 'DESC').all(),
+      queryCollection('posts').where('date', '<=', new Date().toISOString()).order('date', 'DESC').all(),
     ])
 
     const blogItems: FeedItem[] = posts.map((post) => ({

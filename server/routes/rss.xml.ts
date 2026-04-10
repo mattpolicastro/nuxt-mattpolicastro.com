@@ -55,6 +55,7 @@ async function markdownToHtml(md: string): Promise<string> {
 
 export default defineEventHandler(async (event) => {
   const posts = await queryCollection(event, 'posts')
+    .where('date', '<=', new Date().toISOString())
     .order('date', 'DESC')
     .all()
 
