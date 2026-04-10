@@ -3,175 +3,113 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import {
+  createDraft,
+  publishDraft,
+  listDrafts,
+  createObsidianDraft,
+  importFromObsidian,
+} from './lib/post-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
 
-const DRAFTS_DIR = path.join(projectRoot, 'content', 'drafts');
-const POSTS_DIR = path.join(projectRoot, 'content', 'posts');
+const draftsDir = path.join(projectRoot, 'content', 'drafts');
+const postsDir = path.join(projectRoot, 'content', 'posts');
+
+// Auto-detect Obsidian vault
+const obsidianVault = process.env.OBSIDIAN_VAULT || (() => {
+  try {
+    const configPath = path.join(process.env.HOME, 'Library/Application Support/obsidian/obsidian.json');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    const vault = Object.values(config.vaults).find(v => v.open)?.path;
+    if (vault) return vault;
+  } catch {}
+  return null;
+})();
+const obsidianDraftsDir = obsidianVault
+  ? path.join(obsidianVault, 'Areas/Personal Website/Blog/Drafts')
+  : null;
 
 // Ensure directories exist
-if (!fs.existsSync(DRAFTS_DIR)) {
-  fs.mkdirSync(DRAFTS_DIR, { recursive: true });
+if (!fs.existsSync(draftsDir)) {
+  fs.mkdirSync(draftsDir, { recursive: true });
 }
 
-function slugify(title) {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
+// Parse args
+const args = process.argv.slice(2);
+const command = args[0];
+const arg = args[1];
+const atIndex = args.indexOf('--at');
+const scheduleAt = atIndex !== -1 ? args[atIndex + 1] : undefined;
 
-function formatDate(date = new Date()) {
-  return date.toISOString().split('T')[0];
-}
-
-function createDraft(title) {
-  if (!title) {
-    console.error('Error: Please provide a title');
-    console.error('Usage: npm run post -- new "My Post Title"');
-    process.exit(1);
-  }
-
-  const slug = slugify(title);
-  const now = new Date();
-  const timestamp = now.toISOString();
-  const fileName = `${slug}.md`;
-  const filePath = path.join(DRAFTS_DIR, fileName);
-
-  if (fs.existsSync(filePath)) {
-    console.error(`Error: Draft "${fileName}" already exists`);
-    process.exit(1);
-  }
-
-  const template = `---
-title: ${title}
-date: "${timestamp}"
-description: 
-tags: []
----
-
-`;
-
-  fs.writeFileSync(filePath, template);
-  console.log(`✨ Draft created: content/drafts/${fileName}`);
-  console.log(`📝 Open it and add your content, then run: npm run post -- publish "${slug}"`);
-}
-
-function publishDraft(slug) {
-  if (!slug) {
-    console.error('Error: Please provide a draft slug');
-    console.error('Usage: npm run post -- publish "my-post-slug"');
-    process.exit(1);
-  }
-
-  const draftPath = path.join(DRAFTS_DIR, `${slug}.md`);
-
-  if (!fs.existsSync(draftPath)) {
-    console.error(`Error: Draft "${slug}.md" not found in content/drafts`);
-    process.exit(1);
-  }
-
-  // Read the draft
-  let content = fs.readFileSync(draftPath, 'utf-8');
-
-  // Extract the original date from the draft
-  const dateMatch = content.match(/^date: "([^"]+)"$/m);
-  const originalDate = dateMatch ? dateMatch[1] : null;
-
-  // Update to published date
-  const today = new Date();
-  const publishDate = today.toISOString();
-  content = content.replace(/^date: ".*?"$/m, `date: "${publishDate}"`);
-
-  // Add created field if original date exists
-  if (originalDate) {
-    content = content.replace(
-      /^date: ".*?"$/m,
-      `date: "${publishDate}"\ncreated: "${originalDate}"`
-    );
-  }
-
-  // Write to posts folder
-  const postPath = path.join(POSTS_DIR, `${slug}.md`);
-  if (fs.existsSync(postPath)) {
-    console.error(`Error: Post "${slug}.md" already exists in content/posts`);
-    process.exit(1);
-  }
-
-  fs.writeFileSync(postPath, content);
-  fs.unlinkSync(draftPath);
-
-  console.log(`🚀 Draft published!`);
-  console.log(`   Moved: content/drafts/${slug}.md → content/posts/${slug}.md`);
-  if (originalDate) {
-    console.log(`   Created: ${originalDate}`);
-    console.log(`   Published: ${publishDate}`);
-  }
-
-  // Check for bare URLs in markdown links (missing protocol)
-  const bareUrlPattern = /\[([^\]]+)\]\((?!https?:\/\/|\/|#|mailto:)([^)]+)\)/g;
-  const bareUrls = [...content.matchAll(bareUrlPattern)];
-  if (bareUrls.length > 0) {
-    console.error(`\n❌ Found links with missing protocol:`);
-    bareUrls.forEach(m => console.error(`   [${m[1]}](${m[2]}) — did you mean https://${m[2]}?`));
-    // Restore the draft
-    fs.writeFileSync(draftPath, fs.readFileSync(postPath, 'utf-8'));
-    fs.unlinkSync(postPath);
-    console.error(`\n   Draft restored. Fix the links and try again.`);
-    process.exit(1);
-  }
-
-  // Extract title from content for commit message
-  const titleMatch = content.match(/^title: (.+)$/m);
-  const title = titleMatch ? titleMatch[1] : slug;
-
-  // Commit the published post
-  try {
-    execSync(`cd "${projectRoot}" && git add content/posts/${slug}.md && git commit -m "post: ${title}"`, {
-      stdio: 'pipe',
-    });
-    console.log(`   ✓ Committed to git`);
-  } catch (error) {
-    console.warn(`   ⚠ Git commit failed (continue without auto-commit if desired)`);
-  }
-}
-
-// Get command and arguments
-const command = process.argv[2];
-const arg = process.argv[3];
-
-switch (command) {
-  case 'new':
-    createDraft(arg);
-    break;
-  case 'publish':
-    publishDraft(arg);
-    break;
-  case 'list':
-    const drafts = fs.readdirSync(DRAFTS_DIR);
-    if (drafts.length === 0) {
-      console.log('📭 No drafts found');
-    } else {
-      console.log('📋 Drafts:');
-      drafts.forEach(f => {
-        const content = fs.readFileSync(path.join(DRAFTS_DIR, f), 'utf-8');
-        const titleMatch = content.match(/^title: (.+)$/m);
-        const title = titleMatch ? titleMatch[1] : 'Untitled';
-        const slug = f.replace('.md', '');
-        console.log(`  • ${title} (${slug})`);
-      });
+try {
+  switch (command) {
+    case 'new': {
+      const { slug } = createDraft(arg, { draftsDir });
+      console.log(`✨ Draft created: content/drafts/${slug}.md`);
+      console.log(`📝 Open it and add your content, then run: npm run post -- publish "${slug}"`);
+      break;
     }
-    break;
-  default:
-    console.log('Post Management (Hexo-style)');
-    console.log('');
-    console.log('Commands:');
-    console.log('  npm run post -- new "Your Post Title"');
-    console.log('  npm run post -- publish slug');
-    console.log('  npm run post -- list');
+    case 'publish': {
+      const result = publishDraft(arg, scheduleAt, { draftsDir, postsDir, projectRoot });
+      console.log(result.isScheduled ? `📅 Draft scheduled!` : `🚀 Draft published!`);
+      console.log(`   Moved: content/drafts/${arg}.md → content/posts/${arg}.md`);
+      if (result.originalDate) {
+        console.log(`   Created: ${result.originalDate}`);
+        console.log(`   ${result.isScheduled ? 'Scheduled' : 'Published'}: ${result.publishDate}`);
+      }
+      console.log(result.committed ? `   ✓ Committed to git` : `   ⚠ Git commit failed`);
+      break;
+    }
+    case 'list': {
+      const drafts = listDrafts({ draftsDir });
+      if (drafts.length === 0) {
+        console.log('📭 No drafts found');
+      } else {
+        console.log('📋 Drafts:');
+        drafts.forEach(d => console.log(`  • ${d.title} (${d.slug})`));
+      }
+      break;
+    }
+    case 'import': {
+      const result = importFromObsidian(arg, { obsidianDraftsDir, draftsDir });
+      if (result.list) {
+        if (result.list.length === 0) {
+          console.log('📭 No drafts in Obsidian');
+        } else {
+          console.log('📋 Obsidian drafts:');
+          result.list.forEach(name => console.log(`  • ${name}`));
+          console.log(`\nImport one with: npm run post -- import "slug"`);
+        }
+      } else {
+        console.log(`✨ Imported: ${result.match} → content/drafts/${result.destSlug}.md`);
+        console.log(`   Removed from Obsidian`);
+        if (result.embeds.length > 0) {
+          console.log(`\n⚠ ${result.embeds.length} embed(s) removed — check TODOs in the file:`);
+          result.embeds.forEach(e => console.log(`  ${e}`));
+        }
+      }
+      break;
+    }
+    case 'draft': {
+      const { fileName } = createObsidianDraft(arg, { obsidianDraftsDir });
+      console.log(`✨ Obsidian draft created: ${fileName}`);
+      break;
+    }
+    default:
+      console.log('Post Management (Hexo-style)');
+      console.log('');
+      console.log('Commands:');
+      console.log('  npm run post -- new "Your Post Title"');
+      console.log('  npm run post -- publish slug [--at "2026-04-15T09:00:00Z"]');
+      console.log('  npm run post -- list');
+      console.log('  npm run post -- draft "Title"       Create draft in Obsidian');
+      console.log('  npm run post -- import              List Obsidian drafts');
+      console.log('  npm run post -- import "slug"       Import from Obsidian');
+  }
+} catch (err) {
+  console.error(`Error: ${err.message}`);
+  process.exit(1);
 }
