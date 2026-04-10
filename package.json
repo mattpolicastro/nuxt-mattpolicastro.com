@@ -8,7 +8,10 @@
     "preview": "npx serve .output/public",
     "postinstall": "nuxt prepare",
     "post": "node scripts/manage-posts.js",
-    "//post": "Post management: new \"Title\", publish <slug>, list"
+    "//post": "Post management: new \"Title\", publish <slug>, list",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@bootstrap-vue-next/nuxt": "^0.25.0",
@@ -27,10 +30,12 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@playwright/test": "^1.59.1",
     "@types/node": "^22.0.0",
     "@types/three": "^0.173.0",
     "sass": "^1.85.0",
     "typescript": "^5.7.0",
+    "vitest": "^4.1.4",
     "vue-tsc": "^2.2.0"
   }
 }

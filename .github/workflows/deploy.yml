@@ -25,6 +25,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for layout/style changes
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "e2e=false" >> "$GITHUB_OUTPUT"
+          else
+            CHANGED=$(git diff --name-only HEAD~1 HEAD -- \
+              'app.vue' 'layouts/' 'components/' 'pages/' 'composables/' \
+              'assets/' 'nuxt.config.ts' 'content.config.ts' \
+              'e2e/' 'playwright.config.ts' 'server/')
+            if [ -n "$CHANGED" ]; then
+              echo "e2e=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "e2e=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,11 +54,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run unit tests
+        run: npm test
+
       - name: Generate static site
         run: npm run build
         env:
           NODE_ENV: production
           NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY: ${{ secrets.NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY }}
+
+      - name: Install Playwright
+        if: steps.changes.outputs.e2e == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        if: steps.changes.outputs.e2e == 'true'
+        run: npx playwright test
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

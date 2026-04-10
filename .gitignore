@@ -19,6 +19,10 @@ analytics/
 .env.*
 !.env.example
 
+# Test artifacts
+test-results/
+playwright-report/
+
 # OS / editor
 .DS_Store
 Thumbs.db
