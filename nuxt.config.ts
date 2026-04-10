@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@bootstrap-vue-next/nuxt',
     '@simpleanalytics/nuxt',
+    '@nuxt/fonts',
   ],
 
   simpleAnalytics: {
@@ -69,6 +70,7 @@ export default defineNuxtConfig({
   // BootstrapVueNext — tree-shaking friendly; components auto-imported
   bootstrapVueNext: {
     composables: true,
+    css: false,
   },
 
   // TypeScript strict mode
@@ -80,6 +82,7 @@ export default defineNuxtConfig({
   // App-level head defaults
   app: {
     head: {
+      htmlAttrs: { lang: 'en' },
       title: 'Matt Policastro',
       meta: [
         { charset: 'utf-8' },
@@ -87,10 +90,6 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Personal site and blog of Matt Policastro.' },
       ],
       link: [
-        // Google Fonts — Space Mono (400 + 700, regular and italic variants)
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap' },
         // RSS autodiscovery — lets feed readers find the feed automatically.
         { rel: 'alternate', type: 'application/rss+xml', title: 'Matt Policastro', href: '/rss.xml' },
       ],

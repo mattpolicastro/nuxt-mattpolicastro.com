@@ -105,7 +105,7 @@ const featureFlag = ref(gb?.isOn('a_a-test'))
     <!-- =====================================================
          Page content
     ====================================================== -->
-    <main>
+    <main role="main">
       <NuxtPage />
     </main>
 
@@ -113,7 +113,7 @@ const featureFlag = ref(gb?.isOn('a_a-test'))
          Footer
     ====================================================== -->
     <footer class="py-4 border-top border-secondary border-opacity-25 mt-5">
-      <BContainer>
+      <div class="container">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
           <p class="text-muted small mb-0">
             <!-- TODO: Update year / license preference -->
@@ -139,7 +139,7 @@ const featureFlag = ref(gb?.isOn('a_a-test'))
             </a>
           </div>
         </div>
-      </BContainer>
+      </div>
     </footer>
   </div>
 </template>
