@@ -9,6 +9,7 @@ import {
   listDrafts,
   createObsidianDraft,
   importFromObsidian,
+  backupToObsidian,
 } from './lib/post-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -98,6 +99,13 @@ try {
       console.log(`✨ Obsidian draft created: ${fileName}`);
       break;
     }
+    case 'backup': {
+      const { copied, skipped, total } = backupToObsidian({ postsDir, obsidianDraftsDir });
+      console.log(`📦 Backed up ${total} posts to Obsidian`);
+      if (copied > 0) console.log(`   ${copied} copied`);
+      if (skipped > 0) console.log(`   ${skipped} unchanged`);
+      break;
+    }
     default:
       console.log('Post Management (Hexo-style)');
       console.log('');
@@ -108,6 +116,7 @@ try {
       console.log('  npm run post -- draft "Title"       Create draft in Obsidian');
       console.log('  npm run post -- import              List Obsidian drafts');
       console.log('  npm run post -- import "slug"       Import from Obsidian');
+      console.log('  npm run post -- backup              Sync posts to Obsidian');
   }
 } catch (err) {
   console.error(`Error: ${err.message}`);

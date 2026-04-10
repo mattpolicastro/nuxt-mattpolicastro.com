@@ -205,6 +205,44 @@ export function importFromObsidian(slug, { obsidianDraftsDir, draftsDir }) {
   return { match, destSlug, embeds: embeds || [] };
 }
 
+export function backupToObsidian({ postsDir, obsidianDraftsDir }) {
+  requireObsidian({ obsidianDraftsDir });
+
+  // Posts go in a sibling "Posts" folder next to "Drafts"
+  const obsidianPostsDir = path.join(path.dirname(obsidianDraftsDir), 'Posts');
+  if (!fs.existsSync(obsidianPostsDir)) {
+    fs.mkdirSync(obsidianPostsDir, { recursive: true });
+  }
+
+  const posts = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
+  let copied = 0;
+  let skipped = 0;
+
+  for (const file of posts) {
+    const src = path.join(postsDir, file);
+    const srcContent = fs.readFileSync(src, 'utf-8');
+
+    // Use the title from frontmatter as the Obsidian filename
+    const titleMatch = srcContent.match(/^title: (.+)$/m);
+    const title = titleMatch ? titleMatch[1] : file.replace('.md', '');
+    const destFile = `${title}.md`;
+    const dest = path.join(obsidianPostsDir, destFile);
+
+    if (fs.existsSync(dest)) {
+      const destContent = fs.readFileSync(dest, 'utf-8');
+      if (destContent === srcContent) {
+        skipped++;
+        continue;
+      }
+    }
+
+    fs.writeFileSync(dest, srcContent);
+    copied++;
+  }
+
+  return { copied, skipped, total: posts.length };
+}
+
 export function listDrafts({ draftsDir }) {
   const files = fs.readdirSync(draftsDir).filter(f => f.endsWith('.md'));
   return files.map(f => {
