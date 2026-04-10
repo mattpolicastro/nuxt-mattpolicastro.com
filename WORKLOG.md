@@ -15,3 +15,21 @@
 - queries-quandaries.md has local modifications (pre-existing)
 
 ---
+
+## 2026-04-10 (cont.)
+
+**What:** Archived Bluesky + GitHub feeds as JSONL with incremental sync, redesigned archives page as a unified activity timeline with platform filters and grouped layout.
+
+**Decisions:**
+- Feed data persisted in data/*.jsonl — adapters read from local files instead of live API calls at build time
+- sync-feeds.js handles API fetching, dedup by URL, and append; runs in CI hourly (rebuild.yml commits + pushes, triggering deploy)
+- GitHub events API truncates PR details — added hydration step via pulls API using GITHUB_TOKEN
+- Homepage capped to 30 most recent Bluesky posts; archives shows everything
+- Archives condensed list format: year → month → items, with adjacent GitHub PRs from the same repo collapsed under a repo name header
+- `--seed` flag on sync-feeds.js for one-time deep backfill (paginated)
+
+**Next:**
+- 6 commits ahead of origin, ready to push
+- queries-quandaries.md still has local modifications (pre-existing)
+
+---
