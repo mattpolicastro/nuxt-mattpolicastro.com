@@ -31,6 +31,7 @@ Thumbs.db
 .vscode/settings.json
 .idea/
 *.code-workspace
+.fastembed_cache
 
 # Aider artifacts
 .aider.*
