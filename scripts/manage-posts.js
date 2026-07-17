@@ -10,6 +10,8 @@ import {
   createObsidianDraft,
   importFromObsidian,
   backupToObsidian,
+  setBlueskyFeature,
+  listFeaturedBluesky,
 } from './lib/post-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +20,7 @@ const projectRoot = path.join(__dirname, '..');
 
 const draftsDir = path.join(projectRoot, 'content', 'drafts');
 const postsDir = path.join(projectRoot, 'content', 'posts');
+const dataDir = path.join(projectRoot, 'data');
 
 // Auto-detect Obsidian vault
 const obsidianVault = process.env.OBSIDIAN_VAULT || (() => {
@@ -106,6 +109,32 @@ try {
       if (skipped > 0) console.log(`   ${skipped} unchanged`);
       break;
     }
+    case 'feature':
+    case 'unfeature': {
+      const show = command === 'feature';
+      const result = setBlueskyFeature(arg, show, { dataDir });
+      const preview = result.content.replace(/\n/g, ' ').slice(0, 60);
+      console.log(show
+        ? `⭐ Featured on homepage: "${preview}${result.content.length > 60 ? '…' : ''}"`
+        : `➖ Unfeatured: "${preview}${result.content.length > 60 ? '…' : ''}"`);
+      console.log(`   ${result.url}`);
+      console.log(`   ⚠ Commit data/bluesky.jsonl to publish the change.`);
+      break;
+    }
+    case 'featured': {
+      const featured = listFeaturedBluesky({ dataDir });
+      if (featured.length === 0) {
+        console.log('📭 No featured Bluesky posts');
+      } else {
+        console.log('⭐ Featured Bluesky posts:');
+        featured.forEach(f => {
+          const preview = f.content.replace(/\n/g, ' ').slice(0, 60);
+          console.log(`  • ${preview}${f.content.length > 60 ? '…' : ''}`);
+          console.log(`    ${f.url}`);
+        });
+      }
+      break;
+    }
     default:
       console.log('Post Management (Hexo-style)');
       console.log('');
@@ -117,6 +146,9 @@ try {
       console.log('  npm run post -- import              List Obsidian drafts');
       console.log('  npm run post -- import "slug"       Import from Obsidian');
       console.log('  npm run post -- backup              Sync posts to Obsidian');
+      console.log('  npm run post -- feature <bsky-url>  Keep a Bluesky post on the homepage feed');
+      console.log('  npm run post -- unfeature <bsky-url>  Remove homepage feature flag');
+      console.log('  npm run post -- featured            List featured Bluesky posts');
   }
 } catch (err) {
   console.error(`Error: ${err.message}`);

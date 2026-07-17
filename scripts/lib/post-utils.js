@@ -243,6 +243,56 @@ export function backupToObsidian({ postsDir, obsidianDraftsDir }) {
   return { copied, skipped, total: posts.length };
 }
 
+// Match a Bluesky post by its full URL or just its rkey (last path segment).
+function matchesBsky(item, urlOrKey) {
+  return item.url === urlOrKey || item.url.split('/').at(-1) === urlOrKey;
+}
+
+/**
+ * Toggle the homepage curation flag on a Bluesky post in data/bluesky.jsonl.
+ * Rewrites only the matched line (others are passed through verbatim), so it
+ * plays nicely with the append-only feed sync.
+ */
+export function setBlueskyFeature(urlOrKey, show, { dataDir }) {
+  if (!urlOrKey) {
+    throw new Error('Please provide a Bluesky post URL or rkey');
+  }
+
+  const file = path.join(dataDir, 'bluesky.jsonl');
+  if (!fs.existsSync(file)) {
+    throw new Error('data/bluesky.jsonl not found');
+  }
+
+  const lines = fs.readFileSync(file, 'utf-8').split('\n').filter(Boolean);
+  let matched = null;
+  const out = lines.map(line => {
+    const item = JSON.parse(line);
+    if (!matchesBsky(item, urlOrKey)) return line;
+    matched = item;
+    if (show) item.show = true;
+    else delete item.show;
+    return JSON.stringify(item);
+  });
+
+  if (!matched) {
+    throw new Error(`No Bluesky post found matching "${urlOrKey}"`);
+  }
+
+  fs.writeFileSync(file, out.join('\n') + '\n');
+  return { url: matched.url, content: matched.content, show: !!show };
+}
+
+export function listFeaturedBluesky({ dataDir }) {
+  const file = path.join(dataDir, 'bluesky.jsonl');
+  if (!fs.existsSync(file)) return [];
+  return fs.readFileSync(file, 'utf-8')
+    .split('\n')
+    .filter(Boolean)
+    .map(line => JSON.parse(line))
+    .filter(item => item.show)
+    .map(item => ({ url: item.url, content: item.content }));
+}
+
 export function listDrafts({ draftsDir }) {
   const files = fs.readdirSync(draftsDir).filter(f => f.endsWith('.md'));
   return files.map(f => {

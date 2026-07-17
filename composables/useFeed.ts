@@ -50,11 +50,17 @@ export function useFeed() {
       queryCollection('posts').where('date', '<=', new Date().toISOString()).order('date', 'DESC').all(),
     ])
 
-    // Cap Bluesky to the 30 most recent for the homepage feed
-    const recentBsky = adapterItems
+    // Homepage Bluesky feed: the 5 most recent posts, plus any older post
+    // manually tagged `"show": true` in data/bluesky.jsonl (via `npm run post -- feature`).
+    // Keeps the homepage from filling with throwaway posts while letting good ones
+    // linger. The full archive is unaffected — /archives reads the JSONL directly.
+    const bskySorted = adapterItems
       .filter(i => i.platform === 'bluesky')
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 30)
+    const recentBsky = bskySorted.slice(0, 5)
+    const recentUrls = new Set(recentBsky.map(i => i.url))
+    const featuredBsky = bskySorted.filter(i => i.show && !recentUrls.has(i.url))
+    const homepageBsky = [...recentBsky, ...featuredBsky]
     const nonBsky = adapterItems.filter(i => i.platform !== 'bluesky')
 
     const blogItems: FeedItem[] = posts.map((post) => ({
@@ -73,7 +79,7 @@ export function useFeed() {
       })(),
     }))
 
-    return [...recentBsky, ...nonBsky, ...blogItems].sort(
+    return [...homepageBsky, ...nonBsky, ...blogItems].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
   }, {

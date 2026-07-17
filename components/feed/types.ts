@@ -49,6 +49,13 @@ export interface FeedItem {
     thumbnailUrl?: string
     url: string
   }
+
+  /**
+   * Manual curation flag for Bluesky posts (set via `npm run post -- feature <url>`).
+   * When true, the post stays on the homepage feed beyond the recency window.
+   * Has no effect on /archives, which always shows every item.
+   */
+  show?: boolean
 }
 
 // ============================================================
