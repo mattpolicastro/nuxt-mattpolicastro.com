@@ -38,6 +38,10 @@ const typeIcon: Record<string, string> = {
   skeet: '💬',
   quote_post: '💬',
   pr_merged: '🔀',
+  pr_opened: '🔀',
+  issue_opened: '🐛',
+  push: '⬆️',
+  repo_created: '✨',
   release: '🚀',
   blog_post: '📝',
 }
