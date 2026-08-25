@@ -40,3 +40,5 @@
 - Key via `NUXT_PUBLIC_MIDA_PROJECT_KEY`: repo secret, local `.env`, documented in `.env.example` alongside the GrowthBook key.
 - Anti-flicker snippet and EU CDN not enabled; add if using visual-editor tests.
 - First Mida test launched same day.
+- Feed now records pushes (hydrated via compare API), new repos, and upstream issues/PRs; GitHubAdapter collapses same-repo same-day pushes. Archive seeded 17 -> 29 items.
+- Removed the unused GrowthBook A/A stub and dependency.
