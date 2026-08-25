@@ -67,7 +67,6 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
-          NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY: ${{ secrets.NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY }}
           NUXT_PUBLIC_MIDA_PROJECT_KEY: ${{ secrets.NUXT_PUBLIC_MIDA_PROJECT_KEY }}
 
       - name: Install Playwright
