@@ -33,3 +33,10 @@
 - queries-quandaries.md still has local modifications (pre-existing)
 
 ---
+
+## 2026-08-25 — Mida.so A/B testing
+
+- Added `plugins/mida.ts` injecting the Mida optimize.js tag at prerender (replaces the React-only `mida-nextjs` package, which just emits the same script tag).
+- Key via `NUXT_PUBLIC_MIDA_PROJECT_KEY`: repo secret, local `.env`, documented in `.env.example` alongside the GrowthBook key.
+- Anti-flicker snippet and EU CDN not enabled; add if using visual-editor tests.
+- First Mida test launched same day.
