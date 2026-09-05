@@ -21,6 +21,10 @@ const adapters = [
   //   e.g. new MastodonAdapter(), new SubstackAdapter()
 ]
 
+// Keep the homepage a recent, readable window into the work. The archive
+// remains the complete record, including every synced external item.
+const HOME_FEED_LIMIT = 10
+
 async function fetchAdapterItems(): Promise<FeedItem[]> {
   const results = await Promise.allSettled(adapters.map((a) => a.fetch()))
 
@@ -79,9 +83,9 @@ export function useFeed() {
       })(),
     }))
 
-    return [...homepageBsky, ...nonBsky, ...blogItems].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
+    return [...homepageBsky, ...nonBsky, ...blogItems]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, HOME_FEED_LIMIT)
   }, {
     // Use the pre-rendered payload on the client — never re-fetch live API data
     // during hydration, which would produce a different result from the static HTML.
