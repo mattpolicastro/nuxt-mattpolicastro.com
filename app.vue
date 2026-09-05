@@ -122,6 +122,11 @@ const featureFlag = ref(gb?.isOn('a_a-test'))
               </Transition>
             </li>
             <li class="nav-item">
+              <a href="/rss.xml" class="nav-link menu-link" aria-label="RSS feed" title="RSS feed">
+                <span class="d-lg-none">RSS feed</span><NavGlyph type="rss" />
+              </a>
+            </li>
+            <li class="nav-item">
               <button
                 type="button"
                 class="nav-link theme-toggle-btn"
