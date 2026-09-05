@@ -5,13 +5,15 @@ useHead({ title: 'About — Matt Policastro' })
 <template>
   <div class="container page-wrap py-5">
     <div class="row justify-content-center">
-      <div class="col-lg-7">
+      <div class="col-lg-10">
         <h1 class="page-heading">Trying & Learning.</h1>
 
-        <div class="prose">
+        <div class="about-layout">
+        <PixelPortrait class="about-portrait" />
+        <div class="prose about-copy">
           <!-- TODO: Replace with your actual bio -->
           <p>
-            Hi, I’m Matt Policastro. I've been working in digital environments for most of my professional career, running experiments and and answering questions. But I’m a tinkerer at heart. I simply enjoy building interesting things, digital and otherwise.
+            I've been working in digital environments for most of my career, running experiments and and answering questions. But I’m a tinkerer at heart. I simply enjoy building interesting things, digital and otherwise.
           </p>
 
           <p>
@@ -39,6 +41,7 @@ useHead({ title: 'About — Matt Policastro' })
             Posts have an <a href="/rss.xml">RSS feed</a>.
           </p>
         </div>
+        </div>
 
       </div>
     </div>
@@ -48,5 +51,12 @@ useHead({ title: 'About — Matt Policastro' })
 <style scoped>
 .page-wrap {
   padding-top: clamp(4.5rem, 10vw, 7rem) !important;
+}
+.about-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.about-portrait { grid-column: 2; grid-row: 1; }
+.about-copy { grid-column: 1; grid-row: 1; min-width: 0; }
+@media (max-width: 767.98px) {
+  .about-layout { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .about-portrait, .about-copy { grid-column: auto; grid-row: auto; }
 }
 </style>
