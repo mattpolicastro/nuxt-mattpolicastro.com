@@ -1,0 +1,311 @@
+{
+  "title": "A loose chronology.",
+  "threads": {
+    "work": {
+      "label": "Learning & work",
+      "connection": "solid"
+    },
+    "making": {
+      "label": "Software",
+      "connection": "dashed"
+    },
+    "living": {
+      "label": "Life",
+      "connection": "dotted"
+    },
+    "bikes": {
+      "label": "Bikes",
+      "connection": "dashed"
+    }
+  },
+  "entries": [
+    {
+      "id": "born",
+      "date": "1991",
+      "thread": "living",
+      "title": "Born in Texas.",
+      "body": "Yeehaw.",
+      "featured": false
+    },
+    {
+      "id": "move-to-europe",
+      "date": null,
+      "thread": "living",
+      "title": "Moved to Germany.",
+      "body": "Wore felt hats.",
+      "featured": false
+    },
+    {
+      "id": "move-to-uk",
+      "date": null,
+      "thread": "living",
+      "title": "Then the UK.",
+      "body": "Picked up a real-deal posh accent.",
+      "featured": false
+    },
+    {
+      "id": "belgium",
+      "date": null,
+      "thread": "living",
+      "title": "Belgium.",
+      "body": "Lost the accent. Still miss the waffles.",
+      "featured": false
+    },
+    {
+      "id": "return-to-us",
+      "date": "1999",
+      "thread": "living",
+      "title": "Back to the US.",
+      "body": "Suburbs of Cincinnati until college.",
+      "featured": false
+    },
+    {
+      "id": "early-computers",
+      "date": null,
+      "thread": "making",
+      "title": "Messing with computers.",
+      "body": "Started messing with computers through sketchy Windows XP theme packs and Deus Ex mods.",
+      "featured": false
+    },
+    {
+      "id": "wooster",
+      "date": "Aug 2009 – May 2013",
+      "thread": "work",
+      "title": "Sociology at Wooster",
+      "body": "A B.A. at The College of Wooster. A phenomenal statistics professor, Dr. Ann Nurse, got me excited about statistics—and pretty good at it. My senior thesis explored smartphones, identity, and social life, written publicly on GitHub.",
+      "featured": true
+    },
+    {
+      "id": "raleigh-and-bike-coop",
+      "date": null,
+      "thread": "bikes",
+      "title": "Dad’s Raleigh.",
+      "body": "Fixed up an 80's steel frame, mint-green paint and all. Learned how to mechanic some with the campus bike co-op.",
+      "featured": false
+    },
+    {
+      "id": "fuji-roubaix",
+      "date": "2011",
+      "thread": "bikes",
+      "title": "My first proper road bike.",
+      "body": "A Fuji Roubaix. I was putting out so much power I nearly tore a chainstay apart and had to warranty the frame. Sold the replacement.",
+      "featured": false
+    },
+    {
+      "id": "back-to-cincinnati",
+      "date": "2013",
+      "thread": "living",
+      "title": "Back to Cincinnati.",
+      "body": "",
+      "featured": false
+    },
+    {
+      "id": "landscape-and-web-design",
+      "date": null,
+      "thread": "work",
+      "title": "Landscape architecture & web design.",
+      "body": "Working as a landscape architect and designing and building websites.",
+      "featured": false
+    },
+    {
+      "id": "hill-and-dale-hundred",
+      "date": null,
+      "thread": "bikes",
+      "title": "The Hill and Dale Hundred.",
+      "body": "Rode my uncle’s Gary Fisher mountain bike for Swallow Bicycle Works’ metric century: nearly 7,000 feet of climbing. A choice only a twenty-something could make.",
+      "featured": false
+    },
+    {
+      "id": "all-city-mr-pink",
+      "date": "November 2013",
+      "thread": "bikes",
+      "title": "Steel is real.",
+      "body": "An All-City Mr. Pink build by Swallow Bicycle Works. Still have that bike.",
+      "featured": true
+    },
+    {
+      "id": "personal-site-evolution",
+      "date": "2014 onward",
+      "thread": "making",
+      "title": "Building my own corner of the web.",
+      "body": "My personal site became an important place to learn by building. Kirby in 2014, then DumDum and daisy in 2015: experiments with Meteor, publishing, feeds, and bringing different kinds of posts together. Later came Hexo, and eventually Nuxt. The site kept changing as I did.",
+      "featured": true
+    },
+    {
+      "id": "global-cloud-donordrive",
+      "date": null,
+      "thread": "work",
+      "title": "Global Cloud / DonorDrive.",
+      "body": "An internship, followed by my first full-time job in data and analytics. I remember the role as Data and Analytics Specialist; exact title and dates still to confirm.",
+      "featured": false
+    },
+    {
+      "id": "javascript-r-sql",
+      "date": "Summer 2014",
+      "thread": "making",
+      "title": "JavaScript, R & SQL.",
+      "body": "Started seriously messing with JavaScript, R, and SQL for the first time after joining Global Cloud.",
+      "featured": false
+    },
+    {
+      "id": "gaframe",
+      "date": "December 2015 – January 2016",
+      "thread": "making",
+      "title": "Google Analytics in VR.",
+      "body": "GAframe: pulling live Google Analytics data into A-Frame, with React components and animated bars. An experiment in taking a dashboard somewhere stranger.",
+      "featured": false
+    },
+    {
+      "id": "cincinnati",
+      "date": "Aug 2016 – Aug 2017",
+      "thread": "work",
+      "title": "Business Analytics at Cincinnati",
+      "body": "An M.S. in Business Analytics at the University of Cincinnati. My mapping capstone applied districting analysis to Cincinnati police districts, using evolutionary algorithms and R.",
+      "featured": true
+    },
+    {
+      "id": "first-pc-cuda-ml",
+      "date": "Fall 2016",
+      "thread": "making",
+      "title": "My first PC build. And CUDA.",
+      "body": "Built my first PC and started experimenting with CUDA and machine learning. Thought I was hot shit for having a remote server I could run ML jobs on.",
+      "featured": false
+    },
+    {
+      "id": "measurecamp-cincinnati-2017",
+      "date": "2017",
+      "thread": "making",
+      "title": "My first live coding demo.",
+      "body": "My first live coding demo, with Tim Wilson at MeasureCamp Cincinnati just before officially graduating from UC. We pulled data from the Google Analytics Reporting API to analyze together.",
+      "featured": false
+    },
+    {
+      "id": "clearhead",
+      "date": "Jun 2017 – Oct 2020",
+      "thread": "work",
+      "title": "Clearhead / Accenture.",
+      "body": "Senior Data Scientist. Building experimentation programs and working on retention and personalization.",
+      "featured": false
+    },
+    {
+      "id": "move-to-chicago",
+      "date": "2017",
+      "thread": "living",
+      "title": "Moved to Chicago.",
+      "body": "",
+      "featured": false
+    },
+    {
+      "id": "surefoot",
+      "date": "Oct 2020 – Oct 2021",
+      "thread": "work",
+      "title": "surefoot.",
+      "body": "Digital Analytics Manager. E-commerce experiments, analyst mentorship, and tools to make the work less manual.",
+      "featured": false
+    },
+    {
+      "id": "soundblasterblaster",
+      "date": "October 2020",
+      "thread": "making",
+      "title": "SoundBlasterBlaster.",
+      "body": "The culmination of the farewell soundboards: a little Vue soundboard generator to leave behind some of the shenanigans from team calls. Also an excuse to get back into writing code.",
+      "featured": false
+    },
+    {
+      "id": "mhm-social",
+      "date": "August 2021",
+      "thread": "making",
+      "title": "mhm.social",
+      "body": "Building and maintaining a small Vue profile site. Its Twitter link becomes a Bluesky link in November 2023.",
+      "featured": false
+    },
+    {
+      "id": "search-discovery",
+      "date": "Oct 2021 – Mar 2023",
+      "thread": "work",
+      "title": "Search Discovery.",
+      "body": "Senior Optimization Manager. Geographic experiments, causal inference, and teaching experimental methods.",
+      "featured": false
+    },
+    {
+      "id": "all-city-super-professional",
+      "date": "May 2022",
+      "thread": "bikes",
+      "title": "The Super Profesh.",
+      "body": "Bought an All-City Super Professional from Cycle Smithy in Chicago. Tried flat-bar life and hated it.",
+      "featured": false
+    },
+    {
+      "id": "st-jude",
+      "date": "Mar 2024 – present",
+      "thread": "work",
+      "title": "St. Jude / ALSAC.",
+      "body": "Digital Experimentation Strategist. Working on donation experiences and helping teams build an experimentation practice.",
+      "featured": true
+    },
+    {
+      "id": "super-professional-stolen",
+      "date": "Summer 2025",
+      "thread": "bikes",
+      "title": "Back on the Mr. Pink.",
+      "body": "The Super Profesh was stolen. Back to the Mr. Pink until the next bike arrived.",
+      "featured": false
+    },
+    {
+      "id": "experiment-tools",
+      "date": "Summer 2025",
+      "thread": "making",
+      "title": "A personal experiment-tool project.",
+      "body": "After years of building analysis tools at work, started a personal project for managing and analyzing A/B tests. It would eventually mutate into AlphaBeta.",
+      "featured": false
+    },
+    {
+      "id": "first-llm",
+      "date": "February 20, 2026",
+      "thread": "making",
+      "title": "My first LLM conversation.",
+      "body": "Used an LLM for the first time: Claude, for code review.",
+      "featured": false
+    },
+    {
+      "id": "alphabeta",
+      "date": null,
+      "thread": "making",
+      "title": "AlphaBeta changes shape.",
+      "body": "An A/B analysis tool becomes a broader project about experimental decisions and process.",
+      "featured": false
+    },
+    {
+      "id": "plinth-board",
+      "date": "April 2026",
+      "thread": "making",
+      "title": "Plinth Board.",
+      "body": "A visual planning board connecting high-level goals to problems, initiatives, and work items. Built with React, with drag-to-connect cards, multiple planning frameworks, and PDF export.",
+      "featured": false
+    },
+    {
+      "id": "disc-trucker",
+      "date": "June 2026",
+      "thread": "bikes",
+      "title": "The Disc Trucker arrives.",
+      "body": "A Surly Disc Trucker from Peregrine Bicycle Studio in Chicago. Ordered it in the spring, then conveniently cracked my kneecap in half.",
+      "featured": true
+    },
+    {
+      "id": "behold",
+      "date": "July 28, 2026",
+      "thread": "making",
+      "title": "behold.",
+      "body": "Spinning 3D models in the terminal as characters, blocks, or pixels. A single Python script with no dependencies. Just for the fun of it.",
+      "featured": false
+    },
+    {
+      "id": "causalimpact-wasm",
+      "date": "Aug 19 → Sep 4, 2026",
+      "thread": "making",
+      "title": "Causal inference in a browser.",
+      "body": "CausalImpact WASM starts as a one-day build. A planning mode and the project’s first external contribution follow in September.",
+      "featured": false
+    }
+  ]
+}

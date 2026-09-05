@@ -43,6 +43,8 @@ useHead({ title: 'About — Matt Policastro' })
         </div>
         </div>
 
+        <LifeTimeline />
+
       </div>
     </div>
   </div>

@@ -88,7 +88,8 @@ onBeforeUnmount(() => {
   opacity: 0.45;
 }
 .cluster-connections rect { fill: var(--palette-accent); stroke: none; }
-.connection--bluesky { stroke-dasharray: 1 5; stroke-linecap: round; }
-.connection--github { stroke-dasharray: 7 4; }
-.connection--blog { stroke-width: 1.5; }
+.connection--bluesky, .connection--living { stroke-dasharray: 1 5; stroke-linecap: round; }
+.connection--github, .connection--making { stroke-dasharray: 7 4; }
+.connection--bikes { stroke-dasharray: 3 3; }
+.connection--blog, .connection--work { stroke-width: 1.5; }
 </style>
