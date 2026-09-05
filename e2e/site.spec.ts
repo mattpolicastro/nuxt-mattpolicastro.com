@@ -10,7 +10,8 @@ test.describe('navigation', () => {
     await page.goto('/');
     const nav = page.locator('nav');
     await expect(nav).toBeVisible();
-    await expect(nav.locator('a.nav-link', { hasText: 'Home' })).toBeVisible();
+    await expect(nav.locator('a.site-brand')).toHaveAttribute('href', '/');
+    await expect(nav.getByRole('link', { name: 'RSS feed' })).toHaveAttribute('href', '/rss.xml');
     await expect(nav.locator('a.nav-link', { hasText: 'About' })).toBeVisible();
     await expect(nav.locator('a.nav-link', { hasText: 'Archives' })).toBeVisible();
   });
@@ -44,7 +45,7 @@ test.describe('home page', () => {
 test.describe('archives', () => {
   test('displays items grouped by year with filter buttons', async ({ page }) => {
     await page.goto('/archives');
-    await expect(page.locator('h1')).toContainText('Archives');
+    await expect(page.locator('h1')).toContainText('Everything-ish.');
     // Filter buttons
     await expect(page.locator('button', { hasText: 'All' })).toBeVisible();
     await expect(page.locator('button', { hasText: 'Blog' })).toBeVisible();
@@ -91,14 +92,16 @@ test.describe('blog post', () => {
     await expect(page.locator('.prose')).toBeVisible();
   });
 
-  test('back link navigates to home', async ({ page }) => {
+  test('back link returns to the post in the archive', async ({ page }) => {
     await page.goto('/archives');
     await page.locator('button', { hasText: 'Blog' }).click();
     const blogLink = page.locator('.archive-link').first();
     await expect(blogLink).toBeVisible();
     await blogLink.click();
-    await page.locator('a', { hasText: '← Home' }).first().click();
-    await expect(page).toHaveURL('/');
+    await page.getByRole('link', { name: 'Back to archive' }).first().click();
+    await expect(page).toHaveURL(/\/archives#post-/);
+    const anchor = new URL(page.url()).hash;
+    await expect(page.locator(anchor)).toBeVisible();
   });
 
   test('non-existent slug returns 404', async ({ page }) => {
@@ -122,19 +125,33 @@ test.describe('search', () => {
 
   test('typing a query shows results', async ({ page }) => {
     await page.goto('/search');
-    const searchInput = page.locator('.col-lg-7 input[type="search"]');
+    const searchInput = page.getByRole('searchbox', { name: 'Search blog posts' });
     await expect(searchInput).toBeVisible();
     await searchInput.fill('the');
-    await expect(page.locator('.card').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.search-result').first()).toBeVisible({ timeout: 10000 });
   });
 
   test('non-matching query shows no results message', async ({ page }) => {
     await page.goto('/search');
-    const searchInput = page.locator('.col-lg-7 input[type="search"]');
+    const searchInput = page.getByRole('searchbox', { name: 'Search blog posts' });
     await expect(searchInput).toBeVisible();
     await searchInput.fill('xyzzy_no_match_ever_12345');
-    await expect(page.locator('text=No results for')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('heading', { name: 'No matching posts.' })).toBeVisible({ timeout: 10000 });
   });
+
+  test('post returns to the originating search query', async ({ page }) => {
+    await page.goto('/search?q=the');
+    await page.locator('.search-result h2 a').first().click();
+    await page.getByRole('link', { name: 'Back to search' }).first().click();
+    await expect(page).toHaveURL('/search?q=the');
+    await expect(page.getByRole('searchbox', { name: 'Search blog posts' })).toHaveValue('the');
+  });
+});
+
+test('about keeps the portrait but does not publish the draft timeline', async ({ page }) => {
+  await page.goto('/about');
+  await expect(page.getByRole('img', { name: 'Pixel portrait of Matt Policastro smiling in front of a stone wall' })).toBeVisible();
+  await expect(page.locator('.life-timeline')).toHaveCount(0);
 });
 
 // ── RSS ─────────────────────────────────────────────────────────
