@@ -76,6 +76,24 @@ npm run post -- list
 
 Shows all draft posts with their titles and slugs.
 
+### Preview a Draft Locally
+
+Start the development server in one terminal:
+
+```bash
+npm run dev
+```
+
+Then, in another terminal, validate a draft and print its preview URL:
+
+```bash
+npm run post -- preview my-post
+```
+
+Draft previews are available at `http://localhost:3000/preview/my-post`. They
+read from `content/drafts/` and are deliberately unavailable in production
+builds, so previewing cannot publish a post.
+
 ## Project Structure
 
 - **`content/posts/`** — Published blog posts
@@ -86,3 +104,33 @@ Shows all draft posts with their titles and slugs.
 - **`scripts/`** — Node utility scripts
 - **`scripts/lib/`** — Shared library (post-utils.js)
 - **`e2e/`** — Playwright E2E tests
+
+## Chat transcripts in posts
+
+Use `ChatTranscript` with one `ChatMessage` per turn. These components are
+auto-imported by Nuxt Content, so no import is needed in a Markdown post.
+
+```md
+::chat-transcript
+  :::chat-message{speaker="Claude"}
+
+    …those phases won't mirror. Fixing it means either fetching the session file
+    over Tailscale or running the import against that daemon with `--host`.
+
+  :::
+  :::chat-message{speaker="Me" align="end"}
+
+    So does this actually land what I'd wanted?
+
+  :::
+  :::chat-message{speaker="Claude"}
+
+    Honestly? Partly, and arguably the wrong half.
+
+  :::
+::
+```
+
+`speaker` is the visible label. Use `align="start"` (the default) or
+`align="end"` to control placement for any speaker. Message bodies support
+normal Markdown, including inline code and links.

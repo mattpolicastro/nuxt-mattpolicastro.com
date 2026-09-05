@@ -7,6 +7,7 @@ import {
   formatDate,
   stripObsidianSyntax,
   createDraft,
+  previewDraft,
   publishDraft,
   listDrafts,
   requireObsidian,
@@ -243,6 +244,21 @@ describe('listDrafts', () => {
     fs.writeFileSync(path.join(draftsDir, 'my-post.md'), '---\ntitle: My Post\n---\n');
     const result = listDrafts({ draftsDir });
     expect(result).toEqual([{ title: 'My Post', slug: 'my-post' }]);
+  });
+});
+
+describe('previewDraft', () => {
+  it('returns a local preview URL for an existing draft', () => {
+    fs.writeFileSync(path.join(draftsDir, 'my-post.md'), '---\ntitle: My Post\n---\n');
+    expect(previewDraft('my-post', { draftsDir })).toEqual({
+      slug: 'my-post',
+      url: 'http://localhost:3000/preview/my-post',
+    });
+  });
+
+  it('rejects missing and unsafe draft slugs', () => {
+    expect(() => previewDraft('', { draftsDir })).toThrow('Please provide a draft slug');
+    expect(() => previewDraft('../my-post', { draftsDir })).toThrow('may only contain');
   });
 });
 
