@@ -33,7 +33,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      growthbookClientKey: '', // override with NUXT_PUBLIC_GROWTHBOOK_CLIENT_KEY
+      midaProjectKey: '', // override with NUXT_PUBLIC_MIDA_PROJECT_KEY
     },
   },
 
