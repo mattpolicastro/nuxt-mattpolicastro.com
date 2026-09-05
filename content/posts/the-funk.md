@@ -3,12 +3,10 @@ title: The Funk
 date: "2026-08-04T17:03:31.034Z"
 created: "2026-07-17T21:37:15.757Z"
 created: "2026-07-17T21:37:15.757Z"
-description: 
+description: As I opened up my editor to draft this post, I realized my first attempt at doing so was 5/4/26, three months ago. Oof.
 tags: []
 
 ---
-As I opened up my editor to draft this post, I realized my first attempt at doing so was 5/4/26, three months ago. Oof.
-
 I've been in a funk.
 
 In fairness, I broke my kneecap right before I was due to pick up a brand new bike build, and it was a long recovery. (Leg immobilization for a subjective eternity and thankfully no surgery.) But the computer stuff that had been fun became a lot less fun when my ass was glued to the couch on doctor's orders.
