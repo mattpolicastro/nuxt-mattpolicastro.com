@@ -3,7 +3,7 @@ title: The Funk
 date: "2026-08-04T17:03:31.034Z"
 created: "2026-07-17T21:37:15.757Z"
 created: "2026-07-17T21:37:15.757Z"
-description: 
+description: As I opened up my editor to draft this post, I realized my first attempt at doing so was 5/4/26, three months ago. Oof.
 tags: []
 
 ---
