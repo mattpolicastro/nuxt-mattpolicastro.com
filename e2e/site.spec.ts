@@ -148,10 +148,10 @@ test.describe('search', () => {
   });
 });
 
-test('about keeps the portrait but does not publish the draft timeline', async ({ page }) => {
+test('about shows the portrait and draft timeline on the timeline branch', async ({ page }) => {
   await page.goto('/about');
   await expect(page.getByRole('img', { name: 'Pixel portrait of Matt Policastro smiling in front of a stone wall' })).toBeVisible();
-  await expect(page.locator('.life-timeline')).toHaveCount(0);
+  await expect(page.locator('.life-timeline')).toBeVisible();
 });
 
 // ── RSS ─────────────────────────────────────────────────────────
