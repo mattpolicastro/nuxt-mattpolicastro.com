@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {
   createDraft,
+  previewDraft,
   publishDraft,
   listDrafts,
   createObsidianDraft,
@@ -65,6 +66,12 @@ try {
         console.log(`   ${result.isScheduled ? 'Scheduled' : 'Published'}: ${result.publishDate}`);
       }
       console.log(result.committed ? `   ✓ Committed to git` : `   ⚠ Git commit failed`);
+      break;
+    }
+    case 'preview': {
+      const result = previewDraft(arg, { draftsDir });
+      console.log(`🔎 Draft preview: ${result.url}`);
+      console.log('   Run `npm run dev` in another terminal, then open this URL.');
       break;
     }
     case 'list': {
@@ -141,6 +148,7 @@ try {
       console.log('Commands:');
       console.log('  npm run post -- new "Your Post Title"');
       console.log('  npm run post -- publish slug [--at "2026-04-15T09:00:00Z"]');
+      console.log('  npm run post -- preview slug    Preview a local draft at /preview/slug');
       console.log('  npm run post -- list');
       console.log('  npm run post -- draft "Title"       Create draft in Obsidian');
       console.log('  npm run post -- import              List Obsidian drafts');

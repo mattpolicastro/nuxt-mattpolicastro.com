@@ -50,6 +50,22 @@ tags: []
   return { slug, fileName };
 }
 
+export function previewDraft(slug, { draftsDir }) {
+  if (!slug) {
+    throw new Error('Please provide a draft slug');
+  }
+  if (!/^[a-z0-9-]+$/.test(slug)) {
+    throw new Error('Draft slugs may only contain lowercase letters, numbers, and hyphens');
+  }
+
+  const draftPath = path.join(draftsDir, `${slug}.md`);
+  if (!fs.existsSync(draftPath)) {
+    throw new Error(`Draft "${slug}.md" not found in drafts`);
+  }
+
+  return { slug, url: `http://localhost:3000/preview/${slug}` };
+}
+
 export function publishDraft(slug, scheduleDate, { draftsDir, postsDir, projectRoot }) {
   if (!slug) {
     throw new Error('Please provide a draft slug');
