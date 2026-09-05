@@ -90,6 +90,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Personal site and blog of Matt Policastro.' },
       ],
       link: [
+        { rel: 'preload', href: '/fonts/instrument-serif-regular.ttf', as: 'font', type: 'font/ttf', crossorigin: 'anonymous' },
         // RSS autodiscovery — lets feed readers find the feed automatically.
         { rel: 'alternate', type: 'application/rss+xml', title: 'Matt Policastro', href: '/rss.xml' },
       ],
