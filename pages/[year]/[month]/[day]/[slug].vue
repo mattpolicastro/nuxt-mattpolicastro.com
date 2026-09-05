@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { archivePostId } from '~/utils/archiveLinks'
+import type { PostReturnContext } from '~/utils/postNavigation'
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
@@ -21,6 +22,14 @@ const archiveLocation = computed(() => {
   return { path: '/archives', hash: `#${archivePostId(path)}` }
 })
 
+const returnContext = useState<PostReturnContext | null>('post-return-context', () => null)
+const backLink = computed(() => {
+  const context = returnContext.value
+  return context?.postPath === route.path
+    ? { to: context.to, label: context.label }
+    : { to: archiveLocation.value, label: 'Back to archive' }
+})
+
 useHead({
   title: `${post.value.title} — Matt Policastro`,
   meta: [
@@ -35,8 +44,8 @@ useHead({
       <div class="col-lg-8">
 
         <!-- Back link -->
-        <NuxtLink :to="archiveLocation" class="back-link d-inline-block mb-5">
-          <span aria-hidden="true">←</span> Back to archive
+        <NuxtLink :to="backLink.to" class="back-link d-inline-block mb-5">
+          <span aria-hidden="true">←</span> {{ backLink.label }}
         </NuxtLink>
 
         <!-- Post header -->
@@ -72,7 +81,7 @@ useHead({
 
         <!-- Footer -->
         <hr class="my-5 border-secondary border-opacity-25" />
-        <NuxtLink :to="archiveLocation" class="back-link"><span aria-hidden="true">←</span> Back to archive</NuxtLink>
+        <NuxtLink :to="backLink.to" class="back-link"><span aria-hidden="true">←</span> {{ backLink.label }}</NuxtLink>
       </div>
     </div>
   </div>
