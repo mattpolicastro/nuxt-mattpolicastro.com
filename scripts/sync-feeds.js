@@ -162,6 +162,24 @@ async function hydratePrTitle(repoName, prNumber) {
   return null;
 }
 
+/** Upstream contributions (issues/PRs on other people's repos) are surfaced; own-repo issues are not. */
+function isOwnRepo(repoName) {
+  return repoName.toLowerCase().startsWith(`${GITHUB_USERNAME.toLowerCase()}/`);
+}
+
+/** Public events omit the commit list — fetch it from the compare API. */
+async function hydratePushCommits(repoName, before, head) {
+  try {
+    const url = `${GITHUB_API_BASE}/repos/${repoName}/compare/${before}...${head}`;
+    const response = await fetch(url, { headers: githubHeaders() });
+    if (response.ok) {
+      const cmp = await response.json();
+      return (cmp.commits ?? []).map(c => ({ message: c.commit.message }));
+    }
+  } catch {}
+  return [];
+}
+
 async function fetchGitHubEvents() {
   const items = [];
   const maxPages = SEED ? 3 : 1;
@@ -201,6 +219,55 @@ async function fetchGitHubEvents() {
             url: htmlUrl,
           });
         }
+      } else if (event.type === 'PushEvent') {
+        const repoName = event.repo.name;
+        const commits = await hydratePushCommits(repoName, event.payload.before, event.payload.head);
+        const count = commits.length;
+        if (count === 0) continue;
+        const branch = (event.payload.ref ?? '').replace('refs/heads/', '');
+        const subjects = commits.map(c => c.message.split('\n')[0]);
+        const noun = count === 1 ? 'commit' : 'commits';
+        const compareUrl = `https://github.com/${repoName}/compare/${event.payload.before}...${event.payload.head}`;
+        items.push({
+          platform: 'github',
+          type: 'push',
+          date: event.created_at,
+          title: subjects[0] ?? `${count} ${noun}`,
+          content: [
+            `Pushed ${count} ${noun} to ${repoName}${branch && branch !== 'main' ? ` (${branch})` : ''}`,
+            ...subjects.slice(1).map(s => `• ${s}`),
+          ].join('\n'),
+          url: compareUrl,
+        });
+      } else if (event.type === 'CreateEvent' && event.payload.ref_type === 'repository') {
+        items.push({
+          platform: 'github',
+          type: 'repo_created',
+          date: event.created_at,
+          title: event.repo.name,
+          content: `Created a new repository: ${event.repo.name}`,
+          url: `https://github.com/${event.repo.name}`,
+        });
+      } else if (event.type === 'IssuesEvent' && event.payload.action === 'opened' && !isOwnRepo(event.repo.name)) {
+        const issue = event.payload.issue;
+        items.push({
+          platform: 'github',
+          type: 'issue_opened',
+          date: event.created_at,
+          title: issue.title,
+          content: `Opened issue in ${event.repo.name}: "${issue.title}"`,
+          url: issue.html_url,
+        });
+      } else if (event.type === 'PullRequestEvent' && event.payload.action === 'opened' && !isOwnRepo(event.repo.name)) {
+        const pr = event.payload.pull_request;
+        items.push({
+          platform: 'github',
+          type: 'pr_opened',
+          date: event.created_at,
+          title: pr.title,
+          content: `Opened PR in ${event.repo.name}: "${pr.title}"`,
+          url: pr.html_url,
+        });
       } else if (event.type === 'ReleaseEvent') {
         const release = event.payload.release;
         if (event.payload.action === 'published' && release) {
