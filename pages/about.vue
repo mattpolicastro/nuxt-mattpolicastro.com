@@ -13,7 +13,7 @@ useHead({ title: 'About — Matt Policastro' })
         <div class="prose about-copy">
           <!-- TODO: Replace with your actual bio -->
           <p>
-            I've been working in digital environments for most of my career, running experiments and and answering questions. But I’m a tinkerer at heart. I simply enjoy building interesting things, digital and otherwise.
+            I've been working in digital environments for most of my career, running experiments and answering questions. But I’m a tinkerer at heart. I simply enjoy building interesting things, digital and otherwise.
           </p>
 
           <p>

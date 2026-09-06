@@ -174,7 +174,7 @@ const byYear = computed(() => {
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h1 class="page-heading">Everything-ish.</h1>
-        <p class="page-intro mb-5">A loose chronological archive of code, writing, and anything that felt important to note.</p>
+        <p class="page-intro mb-5">A loose chronological archive of writing, code, or anything else that felt good to note.</p>
 
         <!-- Platform filter -->
         <div class="d-flex gap-2 mb-4 flex-wrap">

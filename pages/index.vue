@@ -12,7 +12,7 @@ const { data: feedItems } = await useFeed()
           <div class="col-lg-10">
             <h1 class="page-heading">Everything's an experiment.</h1>
             <p class="page-intro mb-0">
-              Notes on work, techology, and life.
+              Notes on work, tech, and life.
             </p>
           </div>
         </div>
