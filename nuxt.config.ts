@@ -26,6 +26,14 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
   ],
 
+  // Bundle the fonts used by the site, rather than relying on visitors having
+  // them installed locally.
+  fonts: {
+    families: [
+      { name: 'Space Mono', provider: 'google', weights: [400, 700] },
+    ],
+  },
+
   simpleAnalytics: {
     hostname: 'mattpolicastro.com',
     collectDnt: true,
@@ -38,7 +46,10 @@ export default defineNuxtConfig({
   },
 
   // Bootstrap + custom SCSS
-  css: ['~/assets/scss/main.scss'],
+  css: [
+    '@fontsource-variable/instrument-sans/wght.css',
+    '~/assets/scss/main.scss',
+  ],
 
   vite: {
     css: {
