@@ -128,13 +128,16 @@ const linkLabel = computed(() => {
       </div>
 
         <!-- Video thumbnail -->
-      <a
+      <div
         v-else-if="item.video"
-        :href="item.video.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="d-inline-block mb-2 position-relative"
+        class="feed-video mb-2"
       >
+        <a
+          :href="item.video.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="d-inline-block position-relative"
+        >
           <img
             v-if="item.video.thumbnailUrl"
             :src="item.video.thumbnailUrl"
@@ -142,7 +145,8 @@ const linkLabel = computed(() => {
             style="max-height: 200px; max-width: 100%;"
           />
           <span class="feed-play-badge">▶</span>
-      </a>
+        </a>
+      </div>
 
         <!-- Quote post block -->
       <QuotedPost v-if="item.quote" :quote="item.quote" />
